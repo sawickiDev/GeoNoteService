@@ -21,7 +21,7 @@ public class WebAppInitializer implements WebApplicationInitializer{
                 servletContext.addServlet("dispatcher", new DispatcherServlet(dispatcherServlet));
 
         servlet.setLoadOnStartup(1);
-        servlet.addMapping("/");
+        servlet.addMapping("/geonoteapp/*");
     }
 
 }
