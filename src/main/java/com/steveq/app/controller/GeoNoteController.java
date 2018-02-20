@@ -1,5 +1,6 @@
 package com.steveq.app.controller;
 
+import com.steveq.app.persistence.model.GeoNote;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GeoNoteController {
 
     @PostMapping(value = "/create")
-    public String insertGeonote(@RequestBody String geoNote){
+    public String insertGeonote(@RequestBody GeoNote geoNote){
         System.out.println("GEONOTE :: " + geoNote);
 
         return "CORRECT";
