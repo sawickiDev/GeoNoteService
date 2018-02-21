@@ -28,8 +28,7 @@ public class GeoNote {
     @Temporal(TemporalType.DATE)
     private Date createdDate;
 
-    @Column(name="location")
-    @Type(type="org.hibernate.spatial.GeometryType")
+    @Column(columnDefinition = "geography")
     private Point location;
 
     @Transient
