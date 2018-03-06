@@ -37,13 +37,6 @@ public class PersistenceConfig {
         dataSource.setPassword(environment.getProperty("jdbc.pass"));
 
         return dataSource;
-//        final ComboPooledDataSource cpds = new ComboPooledDataSource();
-//        cpds.setDriverClass(environment.getProperty("jdbc.driverClassName"));
-//        cpds.setJdbcUrl(environment.getProperty("jdbc.url"));
-//        cpds.setUser(environment.getProperty("jdbc.user"));
-//        cpds.setPassword(environment.getProperty("jdbc.pass"));
-//
-//        return cpds;
     }
 
     @Bean

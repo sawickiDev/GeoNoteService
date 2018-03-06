@@ -15,11 +15,14 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableAuthorizationServer
@@ -30,18 +33,18 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter{
     private Environment environment;
 
     @Autowired
+    private DataSource myComboPooledDataSource;
+
+    @Autowired
+    private ClientDetailsService oauthClientDetailsService;
+
+    @Autowired
     @Qualifier(BeanIds.AUTHENTICATION_MANAGER)
     private AuthenticationManager authenticationManager;
 
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients
-            .inMemory()
-                .withClient("android_app")
-                .secret("test")
-                .authorizedGrantTypes("password", "authorization_code")
-                .accessTokenValiditySeconds(3600)
-                .refreshTokenValiditySeconds(28*24*3600)
-                .scopes("read_all", "write");
+            .withClientDetails(oauthClientDetailsService);
     }
 
     public void configure(AuthorizationServerSecurityConfigurer configurer) throws Exception {
