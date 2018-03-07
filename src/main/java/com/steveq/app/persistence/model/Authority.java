@@ -19,6 +19,9 @@ public class Authority {
     @ManyToMany(mappedBy = "authorities")
     private Set<OauthClient> clients = new HashSet<>();
 
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users = new HashSet<>();
+
     public Authority(){}
 
     public Authority(String name, Set<OauthClient> clients) {
@@ -48,6 +51,14 @@ public class Authority {
 
     public void setClients(Set<OauthClient> clients) {
         this.clients = clients;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     @Override

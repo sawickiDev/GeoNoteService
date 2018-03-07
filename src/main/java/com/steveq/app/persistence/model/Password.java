@@ -17,6 +17,9 @@ public class Password {
     @OneToOne(mappedBy = "pass")
     private OauthClient client;
 
+    @OneToOne(mappedBy = "pass")
+    private User user;
+
     public Password(){}
 
     public Password(String hash) {
@@ -37,6 +40,22 @@ public class Password {
 
     public void setHash(String hash) {
         this.hash = hash;
+    }
+
+    public OauthClient getClient() {
+        return client;
+    }
+
+    public void setClient(OauthClient client) {
+        this.client = client;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

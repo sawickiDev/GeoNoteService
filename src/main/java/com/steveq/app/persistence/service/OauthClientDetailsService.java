@@ -17,10 +17,9 @@ class OauthClientDetailsService implements ClientDetailsService{
 
     @Override
     public ClientDetails loadClientByClientId(String s) throws ClientRegistrationException {
-        System.out.println("FIND CLIENT :: " + s);
+
         OauthClient client = clientRepository.findByName(s);
 
-        System.out.println("FOUND CLIENT :: " + client);
         if(client == null){
             throw new UsernameNotFoundException(s);
         }

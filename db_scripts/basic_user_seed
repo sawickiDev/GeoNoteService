@@ -1,0 +1,11 @@
+insert into passwords_table
+values
+  (nextval('passwords_seq'), 'sawicki');
+
+insert into users_table
+values
+  (nextval('users_seq'), 'adam', 4);
+
+insert into user_authorities_table
+values
+  (5, 2);

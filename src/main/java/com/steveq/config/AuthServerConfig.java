@@ -33,9 +33,6 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter{
     private Environment environment;
 
     @Autowired
-    private DataSource myComboPooledDataSource;
-
-    @Autowired
     private ClientDetailsService oauthClientDetailsService;
 
     @Autowired
