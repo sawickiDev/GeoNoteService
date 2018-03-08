@@ -24,9 +24,8 @@ public class Authority {
 
     public Authority(){}
 
-    public Authority(String name, Set<OauthClient> clients) {
+    public Authority(String name) {
         this.name = name;
-        this.clients = clients;
     }
 
     public int getId() {

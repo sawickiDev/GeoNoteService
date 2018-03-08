@@ -7,7 +7,8 @@ import javax.persistence.*;
 public class Password {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "passwords_seq")
+    @SequenceGenerator(name = "passwords_seq", sequenceName = "passwords_seq")
     @Column(name = "id")
     private int id;
 

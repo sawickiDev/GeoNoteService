@@ -36,6 +36,9 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter{
     private ClientDetailsService oauthClientDetailsService;
 
     @Autowired
+    private com.steveq.app.persistence.service.UserDetailsService userService;
+
+    @Autowired
     @Qualifier(BeanIds.AUTHENTICATION_MANAGER)
     private AuthenticationManager authenticationManager;
 
@@ -54,7 +57,8 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter{
         configurer
                 .tokenStore(tokenStore())
                 .accessTokenConverter(accessTokenConverter())
-                .authenticationManager(authenticationManager);
+                .authenticationManager(authenticationManager)
+                .userDetailsService(userService);
     }
 
     @Bean
