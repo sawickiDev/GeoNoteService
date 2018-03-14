@@ -1,10 +1,11 @@
 package com.steveq.app.persistence.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="passwords_table")
-public class Password {
+public class Password implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "passwords_seq")

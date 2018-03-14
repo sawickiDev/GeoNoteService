@@ -31,10 +31,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/user/register").permitAll()
-        .antMatchers("/oauth/token/**").permitAll()
-        .anyRequest().authenticated()
-        .and().csrf().disable();
+        http
+            .authorizeRequests()
+            .anyRequest().authenticated()
+            .and()
+            .formLogin()
+            .loginPage("/showGeonoteLogin")
+            .loginProcessingUrl("/authenticateTheUser")
+            .permitAll()
+            .defaultSuccessUrl("/geonote/show", true)
+            .and()
+            .authorizeRequests().antMatchers("/oauth/token/**").permitAll()
+            .and()
+            .csrf().disable();
     }
 
 }

@@ -1,12 +1,13 @@
 package com.steveq.app.persistence.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name="authorities_table")
-public class Authority {
+public class Authority implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

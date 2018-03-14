@@ -1,12 +1,13 @@
 package com.steveq.app.persistence.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "grant_type_table")
-public class GrantType {
+public class GrantType implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

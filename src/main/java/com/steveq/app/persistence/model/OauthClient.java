@@ -6,11 +6,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.provider.ClientDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
 @Table(name = "oauth_clients_table")
-public class OauthClient implements ClientDetails{
+public class OauthClient implements ClientDetails, Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
