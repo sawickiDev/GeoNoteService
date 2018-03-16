@@ -33,6 +33,9 @@ public class User implements UserDetails, Serializable{
     )
     private Set<Authority> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "owner")
+    private Set<GeoNote> geoNotes;
+
     public User(){}
 
     public User(String name, Password pass) {
@@ -70,6 +73,14 @@ public class User implements UserDetails, Serializable{
 
     public void setRoles(Set<Authority> roles) {
         this.roles = roles;
+    }
+
+    public Set<GeoNote> getGeoNotes() {
+        return geoNotes;
+    }
+
+    public void setGeoNotes(Set<GeoNote> geoNotes) {
+        this.geoNotes = geoNotes;
     }
 
     @Override

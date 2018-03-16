@@ -1,0 +1,2 @@
+drop sequence notes_seq;
+drop table notes_table;

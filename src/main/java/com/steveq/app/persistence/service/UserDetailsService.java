@@ -7,6 +7,7 @@ import com.steveq.app.persistence.model.Password;
 import com.steveq.app.persistence.model.SimpleUser;
 import com.steveq.app.persistence.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -60,5 +61,19 @@ public class UserDetailsService implements org.springframework.security.core.use
     @Override
     public User saveUser(User user) throws Exception {
         return userRepository.save(user);
+    }
+
+    @Override
+    public User findByName(String name) {
+        return userRepository.findByName(name);
+    }
+
+    @Override
+    public User getCurrentlyLoggedUser() {
+
+        String currentlyLoggedName =
+                (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return this.findByName(currentlyLoggedName);
     }
 }

@@ -42,7 +42,9 @@ create table if not exists authorities_table
 
 insert into authorities_table values
   (nextval('authorities_seq'), 'ADMIN'),
-  (nextval('authorities_seq'), 'STANDARD_USER');
+  (nextval('authorities_seq'), 'STANDARD_USER'),
+  (nextval('authorities_seq'), 'READ_OWNED'),
+  (nextval('authorities_seq'), 'READ_OTHER');
 
 create sequence passwords_seq
   increment by 1

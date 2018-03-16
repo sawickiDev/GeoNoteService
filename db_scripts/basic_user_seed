@@ -8,4 +8,6 @@ values
 
 insert into user_authorities_table
 values
-  (5, 2);
+  (5, 2),
+  (5, 3),
+  (5, 4);
