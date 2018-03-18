@@ -4,19 +4,18 @@ import com.steveq.app.persistence.model.GeoNote;
 import com.steveq.app.persistence.model.GeoNoteRequest;
 import com.steveq.app.persistence.service.GeoNoteService;
 import com.steveq.app.persistence.service.UserDetailsService;
+import com.steveq.app.validation.RadiusSize;
+import com.steveq.app.validation.RadiusValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,7 +61,7 @@ public class GeoNoteController {
     @GetMapping(value = "/fetch")
     public ResponseEntity<List<GeoNoteRequest>> getGeonote(@RequestParam Double lat,
                                            @RequestParam Double lng,
-                                           @Size(min = 100, max = 1000) @RequestParam Double radius,
+                                           @Valid @RadiusSize @RequestParam Double radius,
                                            @RequestParam(required = false) String access){
 
         List<String> accessLevels = fetchAccessLevels(access);
