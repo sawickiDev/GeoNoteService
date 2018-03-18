@@ -4,6 +4,7 @@ import com.steveq.app.persistence.model.GeoNote;
 import com.steveq.app.persistence.model.GeoNoteRequest;
 import com.steveq.app.persistence.service.GeoNoteService;
 import com.steveq.app.persistence.service.UserDetailsService;
+import com.steveq.app.persistence.service.UserService;
 import com.steveq.app.validation.RadiusSize;
 import com.steveq.app.validation.RadiusValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class GeoNoteController {
     private GeoNoteService geoNoteService;
 
     @Autowired
-    private UserDetailsService userService;
+    private UserService userService;
 
     @Autowired
     private Environment environment;
@@ -49,7 +50,7 @@ public class GeoNoteController {
         } catch (DataIntegrityViolationException dve){
             return new ResponseEntity<>("Error during contact creation", HttpStatus.EXPECTATION_FAILED);
         }
-        return new ResponseEntity<>("Note Created Successfully", HttpStatus.OK);
+        return new ResponseEntity<>(environment.getProperty("geonote.create_ok"), HttpStatus.OK);
 
     }
 
@@ -85,7 +86,7 @@ public class GeoNoteController {
         if(providedAccessLevel == null || providedAccessLevel.isEmpty())
             accessLevels.add("owned");
         else
-            Arrays.asList(providedAccessLevel.split(","));
+            accessLevels = Arrays.asList(providedAccessLevel.split(","));
 
         return accessLevels;
     }

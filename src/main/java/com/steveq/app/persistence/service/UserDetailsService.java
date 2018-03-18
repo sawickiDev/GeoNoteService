@@ -31,7 +31,6 @@ public class UserDetailsService implements org.springframework.security.core.use
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
         User user = userRepository.findByName(s);
-
         if(user == null){
             throw new UsernameNotFoundException(s);
         }
@@ -40,10 +39,12 @@ public class UserDetailsService implements org.springframework.security.core.use
     }
 
     @Override
-    public User createUserFromSimpleUser(SimpleUser simpleUser) throws Exception{
+    public User createUserFromSimpleUser(SimpleUser simpleUser) {
 
         List<String> authoritiesNames = new ArrayList<>();
         authoritiesNames.add("STANDARD_USER");
+        authoritiesNames.add("READ_OWNED");
+        authoritiesNames.add("READ_OTHERS");
 
         Set<Authority> newUserAuthorities =
                 authoritiesRepository.findAuthoritiesByNameIn(authoritiesNames);
@@ -53,13 +54,11 @@ public class UserDetailsService implements org.springframework.security.core.use
         user.setPass(new Password(simpleUser.getPassword()));
         user.setRoles(newUserAuthorities);
 
-        System.out.println("ROLES :: " + user.getRoles());
-
         return user;
     }
 
     @Override
-    public User saveUser(User user) throws Exception {
+    public User saveUser(User user) {
         return userRepository.save(user);
     }
 
@@ -70,10 +69,10 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     @Override
     public User getCurrentlyLoggedUser() {
-
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         String currentlyLoggedName =
                 (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        return this.findByName(currentlyLoggedName);
+        System.out.println(currentlyLoggedName);
+        return findByName(currentlyLoggedName);
     }
 }
