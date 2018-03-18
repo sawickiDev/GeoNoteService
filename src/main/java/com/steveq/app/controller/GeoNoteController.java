@@ -12,9 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/geonote")
 @PropertySource({"classpath:geonote.properties"})
+@Validated
 public class GeoNoteController {
 
     @Autowired
@@ -59,7 +62,7 @@ public class GeoNoteController {
     @GetMapping(value = "/fetch")
     public ResponseEntity<List<GeoNoteRequest>> getGeonote(@RequestParam Double lat,
                                            @RequestParam Double lng,
-                                           @RequestParam Double radius,
+                                           @Size(min = 100, max = 1000) @RequestParam Double radius,
                                            @RequestParam(required = false) String access){
 
         List<String> accessLevels = fetchAccessLevels(access);

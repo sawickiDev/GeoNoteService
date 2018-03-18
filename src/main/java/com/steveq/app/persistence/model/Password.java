@@ -8,8 +8,8 @@ import java.io.Serializable;
 public class Password implements Serializable{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "passwords_seq")
-    @SequenceGenerator(name = "passwords_seq", sequenceName = "passwords_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq", sequenceName = "passwords_seq", allocationSize = 1)
     @Column(name = "id")
     private int id;
 

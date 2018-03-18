@@ -10,7 +10,8 @@ import java.util.Set;
 public class GrantType implements Serializable{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq", sequenceName = "grant_type_seq", allocationSize = 1)
     @Column(name = "id")
     private int id;
 

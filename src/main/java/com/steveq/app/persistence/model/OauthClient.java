@@ -14,7 +14,8 @@ import java.util.*;
 public class OauthClient implements ClientDetails, Serializable{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq", sequenceName = "oauth_clients_seq", allocationSize = 1)
     @Column(name = "id")
     private Integer id;
 

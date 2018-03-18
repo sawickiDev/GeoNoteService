@@ -13,8 +13,8 @@ import java.util.*;
 public class User implements UserDetails, Serializable{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
-    @SequenceGenerator(name = "users_seq", sequenceName = "users_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq", sequenceName = "users_seq")
     @Column(name = "id")
     private Integer id;
 

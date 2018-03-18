@@ -10,7 +10,8 @@ import java.util.Set;
 public class Scope implements Serializable{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq", sequenceName = "scope_seq", allocationSize = 1)
     @Column(name = "id")
     private int id;
 

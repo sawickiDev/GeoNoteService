@@ -1,21 +1,15 @@
 package com.steveq.app.persistence.model;
 
-import com.steveq.app.persistence.dao.UserRepository;
-import com.steveq.app.persistence.service.UserService;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
-import org.hibernate.annotations.Type;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 
 @Entity
@@ -25,7 +19,7 @@ public class GeoNote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @SequenceGenerator(name = "seq", sequenceName = "note_seq")
+    @SequenceGenerator(name = "seq", sequenceName = "note_seq", allocationSize = 1)
     private Long id;
 
     @Column(name="note")
