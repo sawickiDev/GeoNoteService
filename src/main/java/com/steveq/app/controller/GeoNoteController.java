@@ -5,16 +5,23 @@ import com.steveq.app.persistence.model.GeoNoteRequest;
 import com.steveq.app.persistence.service.GeoNoteService;
 import com.steveq.app.persistence.service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/geonote")
+@PropertySource({"classpath:geonote.properties"})
 public class GeoNoteController {
 
     @Autowired
@@ -23,44 +30,62 @@ public class GeoNoteController {
     @Autowired
     private UserDetailsService userService;
 
+    @Autowired
+    private Environment environment;
+
     @PostMapping(value = "/create")
-    public ResponseEntity insertGeonote(@RequestBody GeoNoteRequest geoNoteRequest){
+    public ResponseEntity<String> insertGeonote(@Valid @RequestBody GeoNoteRequest geoNoteRequest){
+
+        if(geoNoteService.noteIsSpam(geoNoteRequest.getLat(), geoNoteRequest.getLng())){
+            return new ResponseEntity<>(environment.getProperty("geonote.spam"), HttpStatus.CONFLICT);
+        }
+        GeoNote geoNote =
+                new GeoNote(geoNoteRequest.getNote(), userService.getCurrentlyLoggedUser(), geoNoteRequest.getLat(), geoNoteRequest.getLng());
 
         try{
-            GeoNote geoNote =
-                    new GeoNote(geoNoteRequest.getNote(), geoNoteRequest.getDate(), geoNoteRequest.getLatLng(), userService.getCurrentlyLoggedUser());
-
             geoNoteService.save(geoNote);
-            return new ResponseEntity<String>("Note Created Successfully", HttpStatus.OK);
-        } catch (Exception ex){
-            return new ResponseEntity<String>("Error Creating Note", HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (DataIntegrityViolationException dve){
+            return new ResponseEntity<>("Error during contact creation", HttpStatus.EXPECTATION_FAILED);
         }
+        return new ResponseEntity<>("Note Created Successfully", HttpStatus.OK);
 
     }
 
-    @GetMapping(value = "/fetch")
-    public List<GeoNoteRequest> getGeonote(@RequestParam String lat,
-                                           @RequestParam String lng,
-                                           @RequestParam String radius){
+    @GetMapping(value = "/preview")
+    public List<GeoNoteRequest> viewOwnedGeonotes(){
+        return geoNoteService.getOwned();
+    }
 
+    @GetMapping(value = "/fetch")
+    public ResponseEntity<List<GeoNoteRequest>> getGeonote(@RequestParam Double lat,
+                                           @RequestParam Double lng,
+                                           @RequestParam Double radius,
+                                           @RequestParam(required = false) String access){
+
+        List<String> accessLevels = fetchAccessLevels(access);
         List<GeoNoteRequest> availableGeonotes = new ArrayList<>();
 
-        try {
-            availableGeonotes.addAll(geoNoteService.getOwned());
-            geoNoteService.getOwnedInRadius(lat, lng, radius);
-        } catch (Exception ex){
-            //unauthorized
-            ex.printStackTrace();
+        if(accessLevels.contains("owned")){
+            availableGeonotes.addAll(geoNoteService.getOwnedInRadius(lat, lng, radius));
         }
 
-        try{
-            availableGeonotes.addAll(geoNoteService.getOther());
-        } catch (Exception ex){
-            //unauthorized
-            ex.printStackTrace();
+        if(accessLevels.contains("others")){
+            availableGeonotes.addAll(geoNoteService.getOtherInRadius(lat, lng, radius));
         }
 
-        return availableGeonotes;
+        return new ResponseEntity<>(availableGeonotes, HttpStatus.OK);
+    }
+
+    private List<String> fetchAccessLevels(String providedAccessLevel){
+
+        List<String> accessLevels = new ArrayList<>();
+
+        if(providedAccessLevel == null || providedAccessLevel.isEmpty())
+            accessLevels.add("owned");
+        else
+            Arrays.asList(providedAccessLevel.split(","));
+
+        return accessLevels;
     }
 
 }

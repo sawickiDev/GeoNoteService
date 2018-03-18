@@ -1,16 +1,26 @@
 package com.steveq.app.persistence.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class GeoNoteRequest {
+
+    @NotNull(message = "Please provide note")
+    @Size(min = 1, max = 140, message = "Message must be between 1 and 140 chars")
     private String note;
-    private String date;
-    private String latLng;
+
+    @NotNull(message = "Please provide latitude")
+    private Double lat;
+
+    @NotNull(message = "Please provide longitude")
+    private Double lng;
 
     public GeoNoteRequest(){}
 
-    public GeoNoteRequest(String note, String date, String latLng) {
+    public GeoNoteRequest(String note, Double lat, Double lng) {
         this.note = note;
-        this.date = date;
-        this.latLng = latLng;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     public String getNote() {
@@ -21,28 +31,28 @@ public class GeoNoteRequest {
         this.note = note;
     }
 
-    public String getDate() {
-        return date;
+    public Double getLat() {
+        return lat;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setLat(Double lat) {
+        this.lat = lat;
     }
 
-    public String getLatLng() {
-        return latLng;
+    public Double getLng() {
+        return lng;
     }
 
-    public void setLatLng(String latLng) {
-        this.latLng = latLng;
+    public void setLng(Double lng) {
+        this.lng = lng;
     }
 
     @Override
     public String toString() {
         return "GeoNoteRequest{" +
                 "note='" + note + '\'' +
-                ", date='" + date + '\'' +
-                ", latLng='" + latLng + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
                 '}';
     }
 }

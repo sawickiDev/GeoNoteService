@@ -6,8 +6,10 @@ import com.steveq.app.persistence.model.GeoNoteRequest;
 import java.util.List;
 
 public interface GeoNoteService {
-    public Long save(GeoNote geoNote);
-    public List<GeoNoteRequest> getOwned();
-    public List<GeoNoteRequest> getOther();
-    public List<GeoNoteRequest> getOwnedInRadius(String lat, String lng, String radius);
+    void save(GeoNote geoNote);
+    List<GeoNoteRequest> getOwned();
+    List<GeoNoteRequest> getOther();
+    List<GeoNoteRequest> getOwnedInRadius(Double lat, Double lng, Double radius);
+    List<GeoNoteRequest> getOtherInRadius(Double lat, Double lng, Double radius);
+    Boolean noteIsSpam(Double lat, Double lng);
 }

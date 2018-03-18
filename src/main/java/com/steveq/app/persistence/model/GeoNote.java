@@ -24,8 +24,8 @@ import java.util.Date;
 public class GeoNote {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "note_seq")
-    @SequenceGenerator(name = "note_seq", sequenceName = "note_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq", sequenceName = "note_seq")
     private Long id;
 
     @Column(name="note")
@@ -36,29 +36,19 @@ public class GeoNote {
     private Timestamp createdDate;
 
     @Column(columnDefinition = "geometry")
-    @Type(type="org.hibernate.spatial.GeometryType")
     private Point location;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
-    @Transient
-    private String latLng;
-
-    @Transient
-    private String date;
-
     public GeoNote(){
     }
 
-    public GeoNote(String note, String date, String latLng, User user) {
-        System.out.println("ARGS :: " + note + " " + date + " " + latLng);
+    public GeoNote(String note, User user, Double lat, Double lng) {
         this.note = note;
-        this.createdDate = this.parseDateString(date);
-        this.latLng = latLng;
-        this.location = getPointFromCoordinates();
-
+        this.createdDate = new Timestamp(new Date().getTime());
+        this.location = getPointFromCoordinates(lat, lng);
         this.owner = user;
     }
 
@@ -94,34 +84,6 @@ public class GeoNote {
         this.note = note;
     }
 
-    public String getLatLng() {
-        if(latLng != null)
-            return latLng;
-        else
-            return getLatLangFromPoint();
-    }
-
-    public void setLatLng(String latLng) {
-        this.latLng = latLng;
-        try {
-            this.location = getPointFromCoordinates();
-        } catch (RuntimeException rex) {
-            System.out.println(rex);
-        }
-    }
-
-    public String getDate() {
-        if(date != null)
-            return date;
-        else
-            return formatDateString(createdDate);
-    }
-
-    public void setDate(String date) {
-        this.createdDate = this.parseDateString(date);
-        this.date = date;
-    }
-
     public User getOwner() {
         return owner;
     }
@@ -130,28 +92,17 @@ public class GeoNote {
         this.owner = owner;
     }
 
-    private Point getPointFromCoordinates() throws RuntimeException{
+    private Point getPointFromCoordinates(Double lat, Double lng){
 
         WKTReader reader = new WKTReader();
         Geometry geometry = null;
-        String[] coordinates = this.latLng.split(",");
-        String locationString = "POINT(" + coordinates[0] + ' ' + coordinates[1] + ")";
+        String locationString = "POINT(" + lat + ' ' + lng + ")";
         try {
             geometry = reader.read(locationString);
         } catch (ParseException e) {
-            throw new RuntimeException("Not a WKT string:" + locationString);
+            e.printStackTrace();
         }
         return (Point)geometry;
-    }
-
-    private String getLatLangFromPoint(){
-
-        StringBuilder builder = new StringBuilder();
-        builder.append(this.getLocation().getX());
-        builder.append(",");
-        builder.append(this.getLocation().getY());
-
-        return builder.toString();
     }
 
     private Timestamp parseDateString(String dateString){
@@ -179,8 +130,7 @@ public class GeoNote {
                 ", note='" + note + '\'' +
                 ", createdDate=" + createdDate +
                 ", location=" + location +
-                ", latLng='" + latLng + '\'' +
-                ", date='" + date + '\'' +
+                ", owner=" + owner +
                 '}';
     }
 }
