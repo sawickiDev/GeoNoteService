@@ -12,7 +12,11 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -39,8 +43,17 @@ public class GeoNoteServiceImpl implements GeoNoteService{
     private Environment environment;
 
     @Override
-    public void save(GeoNote geoNote) throws DataIntegrityViolationException {
-        geoNoteDao.save(geoNote);
+    public ResponseEntity save(GeoNote geoNote) {
+        ResponseEntity re = null;
+        try{
+            geoNoteDao.save(geoNote);
+            re = new ResponseEntity(HttpStatus.CREATED);
+        } catch (DataIntegrityViolationException dive){
+            dive.printStackTrace();
+            re = new ResponseEntity(HttpStatus.CONFLICT);
+        }
+
+        return re;
     }
 
     @Override
@@ -49,12 +62,8 @@ public class GeoNoteServiceImpl implements GeoNoteService{
 
         List<GeoNoteRequest> ownedNotes = new ArrayList<>();
         try{
-            List<GeoNote> geoNotes = geoNoteDao.getAllByOwner(userService.getCurrentlyLoggedUser());
-
-            for(GeoNote geoNote : geoNotes){
-                GeoNoteRequest geoNoteRequest = new GeoNoteRequest(geoNote.getNote(), geoNote.getLocation().getX(), geoNote.getLocation().getY());
-                ownedNotes.add(geoNoteRequest);
-            }
+            ownedNotes =
+                    mapGeonoteToRequestValues(geoNoteDao.getAllByOwner(userService.getCurrentlyLoggedUser()));
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -67,12 +76,8 @@ public class GeoNoteServiceImpl implements GeoNoteService{
     public List<GeoNoteRequest> getOther() {
         List<GeoNoteRequest> otherNotes = new ArrayList<>();
         try{
-            List<GeoNote> geoNotes = geoNoteDao.getAllByOwnerIsNot(userService.getCurrentlyLoggedUser());
-
-            for(GeoNote geoNote : geoNotes){
-                GeoNoteRequest geoNoteRequest = new GeoNoteRequest(geoNote.getNote(), geoNote.getLocation().getX(), geoNote.getLocation().getY());
-                otherNotes.add(geoNoteRequest);
-            }
+            otherNotes =
+                    mapGeonoteToRequestValues(geoNoteDao.getAllByOwnerIsNot(userService.getCurrentlyLoggedUser()));
         } catch (Exception ex){
             ex.printStackTrace();
         }
