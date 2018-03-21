@@ -1,8 +1,8 @@
 insert into passwords_table values
-  (nextval('passwords_seq'), 'android');
+  (nextval('passwords_seq'), crypt('android', gen_salt('bf', 10)));
 
 insert into oauth_clients_table values
-  (nextval('oauth_clients_seq'), 'android_app', 1);
+  (nextval('oauth_clients_seq'), 'android_app', 1, 86400, 0);
 
 insert into client_scope_table values
   (1, 1),

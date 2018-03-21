@@ -53,7 +53,7 @@ create sequence passwords_seq
 create table if not exists passwords_table
 (
   id integer not null,
-  hash varchar(20) not null,
+  hash varchar(100) not null,
   constraint "passwords_pk" primary key (id)
 );
 

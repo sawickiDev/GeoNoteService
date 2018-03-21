@@ -1,2 +1,2 @@
-drop sequence notes_seq;
+drop sequence note_seq;
 drop table notes_table;
