@@ -1,8 +1,13 @@
 package com.steveq.app.persistence.model;
 
+import javax.validation.constraints.NotNull;
+
 public class SimpleUser {
 
+    @NotNull(message = "Please provide Username")
     private String name;
+
+    @NotNull(message = "Please provide Password")
     private String password;
 
     public SimpleUser(){};

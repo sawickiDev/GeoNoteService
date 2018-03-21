@@ -42,10 +42,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http
             .authorizeRequests()
             .antMatchers("/user/register/**").permitAll()
+            .antMatchers("/user/register-form/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .formLogin()
-            .loginPage("/showGeonoteLogin")
+            .loginPage("/geonote-login")
             .loginProcessingUrl("/authenticateTheUser")
             .permitAll()
             .defaultSuccessUrl("/geonote/show", true)

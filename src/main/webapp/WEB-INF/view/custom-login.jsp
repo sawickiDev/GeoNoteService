@@ -14,10 +14,11 @@
             <td>Password:</td>
             <td><input type='password' name='password' /></td>
         </tr>
-        <tr>
-            <td><input type="submit" value="submit" /></td>
-        </tr>
     </table>
+    <div>
+        <a href="${pageContext.request.contextPath}/user/register-form">Register</a>
+    </div>
+    <input type="submit" value="submit" />
 </form:form>
 </body>
 </html>
