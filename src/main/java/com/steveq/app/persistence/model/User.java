@@ -14,7 +14,7 @@ public class User implements UserDetails, Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @SequenceGenerator(name = "seq", sequenceName = "users_seq")
+    @SequenceGenerator(name = "seq", sequenceName = "users_seq", allocationSize = 1)
     @Column(name = "id")
     private Integer id;
 

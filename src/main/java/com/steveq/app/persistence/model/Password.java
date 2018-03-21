@@ -1,5 +1,7 @@
 package com.steveq.app.persistence.model;
 
+import org.hibernate.annotations.ColumnTransformer;
+
 import javax.persistence.*;
 import java.io.Serializable;
 

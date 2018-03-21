@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     @Autowired
     private AuthoritiesRepository authoritiesRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -59,6 +63,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     @Override
     public User saveUser(User user) {
+        user.getPass().setHash(passwordEncoder.encode(user.getPass().getHash()));
         return userRepository.save(user);
     }
 
@@ -69,7 +74,6 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     @Override
     public User getCurrentlyLoggedUser() {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         String currentlyLoggedName =
                 (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(currentlyLoggedName);
