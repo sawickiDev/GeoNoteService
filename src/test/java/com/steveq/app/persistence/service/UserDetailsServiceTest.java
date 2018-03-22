@@ -77,11 +77,11 @@ public class UserDetailsServiceTest {
         Assert.assertEquals(3, resultUser.getAuthorities().size());
     }
 
-    @Test
-    public void saveUser() {
-        userDetailsService.saveUser(new User());
-        verify(userRepository).save(any());
-    }
+//    @Test
+//    public void saveUser() {
+//        userDetailsService.saveUser(new User());
+//        verify(userRepository).save(any());
+//    }
 
     @Test
     public void findByName() {
