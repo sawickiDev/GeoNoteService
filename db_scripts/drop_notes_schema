@@ -1,2 +1,0 @@
-drop sequence note_seq;
-drop table notes_table;
