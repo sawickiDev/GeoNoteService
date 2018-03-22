@@ -7,42 +7,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@Controller
+@RestController
 @RequestMapping(value = "/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = "/register-form")
-    public String showRegisterForm(ModelMap modelMap){
-        modelMap.addAttribute("simpleUser", new SimpleUser());
-        return "self-register";
-    }
-
     @PostMapping(value = "/register")
-    public String registerUser(@Valid @ModelAttribute("simpleUser") SimpleUser user,
-                               BindingResult bindingResult){
-        System.out.println("SIMPLE USER :: " + user);
-        if(bindingResult.hasErrors()){
-            return "self-register";
-        }
+    public ResponseEntity registerUser(@Valid @RequestBody SimpleUser user){
+
         User newUser = userService.createUserFromSimpleUser(user);
 
         try{
             userService.saveUser(newUser);
         } catch (DataIntegrityViolationException dve){
-            return "self-register";
+            return new ResponseEntity<>("KO", HttpStatus.CONFLICT);
         }
 
-        return "redirect:/geonote-login";
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
 }

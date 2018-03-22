@@ -22,9 +22,8 @@ public class OauthClient implements ClientDetails, Serializable{
     @Column(name = "name")
     private String name;
 
-    @OneToOne
-    @JoinColumn(name = "password")
-    private Password pass;
+    @Column(name = "secret")
+    private String secret;
 
     @Column(name = "access_token_validity")
     private Integer accessTokenValidity;
@@ -58,9 +57,9 @@ public class OauthClient implements ClientDetails, Serializable{
 
     public OauthClient(){}
 
-    public OauthClient(String name, Password password, Integer accessTokenValidity, Integer refreshTokenValidity) {
+    public OauthClient(String name, String secret, Integer accessTokenValidity, Integer refreshTokenValidity) {
         this.name = name;
-        this.pass = password;
+        this.secret = secret;
         this.accessTokenValidity = accessTokenValidity;
         this.refreshTokenValidity = refreshTokenValidity;
     }
@@ -98,20 +97,20 @@ public class OauthClient implements ClientDetails, Serializable{
         this.refreshTokenValidity = refreshTokenValidity;
     }
 
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
     public Set<Scope> getScopes() {
         return scopes;
     }
 
     public void setScopes(Set<Scope> scopes) {
         this.scopes = scopes;
-    }
-
-    public Password getPass(){
-        return this.pass;
-    }
-
-    public void setPass(Password password) {
-        this.pass = password;
     }
 
     public Set<GrantType> getGrantTypes() {
@@ -127,7 +126,7 @@ public class OauthClient implements ClientDetails, Serializable{
         return "OauthClient{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", password='" + pass + '\'' +
+                ", secret='" + secret + '\'' +
                 ", accessTokenValidity=" + accessTokenValidity +
                 ", refreshTokenValidity=" + refreshTokenValidity +
                 '}';
@@ -150,7 +149,7 @@ public class OauthClient implements ClientDetails, Serializable{
 
     @Override
     public String getClientSecret() {
-        return this.pass.getHash();
+        return this.getSecret();
     }
 
     @Override

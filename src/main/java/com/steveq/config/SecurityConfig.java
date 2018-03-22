@@ -43,18 +43,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .authorizeRequests()
             .antMatchers("/user/register/**").permitAll()
             .antMatchers("/user/register-form/**").permitAll()
-            .antMatchers("/oauth/token/**").permitAll()
+            .antMatchers("/oauth/token/**").authenticated()
             .anyRequest().authenticated()
             .and()
             .formLogin()
             .loginPage("/geonote-login")
             .loginProcessingUrl("/authenticateTheUser")
             .permitAll()
-            .defaultSuccessUrl("/geonote/show", true)
             .and()
-            .anonymous().and().authorizeRequests().antMatchers("/oauth/token/**").permitAll()
-                .and()
+            .authorizeRequests()
+            .antMatchers("/oauth/token").permitAll()
+            .anyRequest().authenticated()
+            .and()
             .csrf().disable();
+
+        http
+            .authorizeRequests()
+            .antMatchers("/oauth/token").permitAll();
     }
 
 }

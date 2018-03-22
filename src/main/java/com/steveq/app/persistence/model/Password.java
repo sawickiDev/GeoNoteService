@@ -19,9 +19,6 @@ public class Password implements Serializable{
     private String hash;
 
     @OneToOne(mappedBy = "pass")
-    private OauthClient client;
-
-    @OneToOne(mappedBy = "pass")
     private User user;
 
     public Password(){}
@@ -44,14 +41,6 @@ public class Password implements Serializable{
 
     public void setHash(String hash) {
         this.hash = hash;
-    }
-
-    public OauthClient getClient() {
-        return client;
-    }
-
-    public void setClient(OauthClient client) {
-        this.client = client;
     }
 
     public User getUser() {

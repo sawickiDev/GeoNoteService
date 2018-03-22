@@ -37,7 +37,7 @@ public class OauthClientDetailsServiceTest {
         OauthClient oauthClient = new OauthClient();
         oauthClient.setId(1);
         oauthClient.setName("clien");
-        oauthClient.setPass(new Password("client"));
+        oauthClient.setSecret("client");
         oauthClient.setScopes(scopes);
 
         when(clientRepository.findByName(any()))
@@ -56,7 +56,7 @@ public class OauthClientDetailsServiceTest {
         OauthClient oauthClient = new OauthClient();
         oauthClient.setId(1);
         oauthClient.setName("clien");
-        oauthClient.setPass(new Password("client"));
+        oauthClient.setSecret("client");
         oauthClient.setScopes(scopes);
 
         when(clientRepository.findByName(any()))
