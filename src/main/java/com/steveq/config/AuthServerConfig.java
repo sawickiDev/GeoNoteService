@@ -54,7 +54,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter{
     public void configure(AuthorizationServerSecurityConfigurer configurer) throws Exception {
         configurer
                 .tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()");
+                .checkTokenAccess("permitAll()");
     }
 
     public void configure(AuthorizationServerEndpointsConfigurer configurer) throws Exception {
