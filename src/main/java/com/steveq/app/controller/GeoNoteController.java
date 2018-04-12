@@ -2,6 +2,7 @@ package com.steveq.app.controller;
 
 import com.steveq.app.persistence.model.GeoNote;
 import com.steveq.app.persistence.model.GeoNoteRequest;
+import com.steveq.app.persistence.model.GeonoteBatch;
 import com.steveq.app.persistence.model.UserRegistrationResponse;
 import com.steveq.app.persistence.service.GeoNoteService;
 import com.steveq.app.persistence.service.UserDetailsService;
@@ -64,10 +65,10 @@ public class GeoNoteController {
     }
 
     @GetMapping(value = "/fetch")
-    public ResponseEntity<List<GeoNoteRequest>> getGeonote(@RequestParam Double lat,
-                                                           @RequestParam Double lng,
-                                                           @Valid @RadiusSize @RequestParam Double radius,
-                                                           @RequestParam(required = false) String access){
+    public ResponseEntity<GeonoteBatch> getGeonote(@RequestParam Double lat,
+                                                   @RequestParam Double lng,
+                                                   @Valid @RadiusSize @RequestParam Double radius,
+                                                   @RequestParam(required = false) String access){
 
         List<String> accessLevels = fetchAccessLevels(access);
         List<GeoNoteRequest> availableGeonotes = new ArrayList<>();
@@ -80,7 +81,7 @@ public class GeoNoteController {
             availableGeonotes.addAll(geoNoteService.getOtherInRadius(lat, lng, radius));
         }
 
-        return new ResponseEntity<>(availableGeonotes, HttpStatus.OK);
+        return new ResponseEntity<GeonoteBatch>(new GeonoteBatch(availableGeonotes), HttpStatus.OK);
     }
 
     private List<String> fetchAccessLevels(String providedAccessLevel){
