@@ -130,7 +130,7 @@ public class GeoNoteServiceImpl implements GeoNoteService{
 
         List<GeoNoteRequest> geoNoteRequests = new ArrayList<>();
         for(GeoNote geoNote : geoNotes){
-            GeoNoteRequest geoNoteRequest = new GeoNoteRequest(geoNote.getNote(), geoNote.getLocation().getX(), geoNote.getLocation().getY());
+            GeoNoteRequest geoNoteRequest = new GeoNoteRequest(geoNote.getNote(), geoNote.getLocation().getX(), geoNote.getLocation().getY(), geoNote.getOwner().getName());
             geoNoteRequests.add(geoNoteRequest);
         }
 
