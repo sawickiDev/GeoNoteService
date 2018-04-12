@@ -22,17 +22,17 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(value = "/register")
-    public ResponseEntity registerUser(@Valid @RequestBody SimpleUser user){
+    public HttpStatus registerUser(@Valid @RequestBody SimpleUser user){
 
         User newUser = userService.createUserFromSimpleUser(user);
 
         try{
             userService.saveUser(newUser);
         } catch (DataIntegrityViolationException dve){
-            return new ResponseEntity<>("KO", HttpStatus.CONFLICT);
+            return HttpStatus.CONFLICT;
         }
 
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return HttpStatus.OK;
     }
 
 }
