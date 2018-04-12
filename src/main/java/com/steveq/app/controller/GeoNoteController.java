@@ -52,7 +52,7 @@ public class GeoNoteController {
             return new ResponseEntity<GeoNoteRequest>(new GeoNoteRequest(), HttpStatus.EXPECTATION_FAILED);
         }
         return new ResponseEntity<GeoNoteRequest>(
-                new GeoNoteRequest(geoNote.getNote(), geoNote.getLocation().getX(), geoNote.getLocation().getY()),
+                new GeoNoteRequest(geoNote.getNote(), geoNote.getLocation().getX(), geoNote.getLocation().getY(), geoNote.getOwner().getName()),
                 HttpStatus.OK
         );
 
@@ -65,9 +65,9 @@ public class GeoNoteController {
 
     @GetMapping(value = "/fetch")
     public ResponseEntity<List<GeoNoteRequest>> getGeonote(@RequestParam Double lat,
-                                           @RequestParam Double lng,
-                                           @Valid @RadiusSize @RequestParam Double radius,
-                                           @RequestParam(required = false) String access){
+                                                           @RequestParam Double lng,
+                                                           @Valid @RadiusSize @RequestParam Double radius,
+                                                           @RequestParam(required = false) String access){
 
         List<String> accessLevels = fetchAccessLevels(access);
         List<GeoNoteRequest> availableGeonotes = new ArrayList<>();

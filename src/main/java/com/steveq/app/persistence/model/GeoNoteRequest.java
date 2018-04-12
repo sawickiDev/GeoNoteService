@@ -15,12 +15,21 @@ public class GeoNoteRequest {
     @NotNull(message = "Please provide longitude")
     private Double lng;
 
+    private String owner;
+
     public GeoNoteRequest(){}
 
     public GeoNoteRequest(String note, Double lat, Double lng) {
         this.note = note;
         this.lat = lat;
         this.lng = lng;
+    }
+
+    public GeoNoteRequest(String note, Double lat, Double lng, String owner) {
+        this.note = note;
+        this.lat = lat;
+        this.lng = lng;
+        this.owner = owner;
     }
 
     public String getNote() {
@@ -47,12 +56,21 @@ public class GeoNoteRequest {
         this.lng = lng;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
     @Override
     public String toString() {
         return "GeoNoteRequest{" +
                 "note='" + note + '\'' +
                 ", lat=" + lat +
                 ", lng=" + lng +
+                ", owner='" + owner + '\'' +
                 '}';
     }
 }
