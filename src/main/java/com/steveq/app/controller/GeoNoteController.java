@@ -2,6 +2,7 @@ package com.steveq.app.controller;
 
 import com.steveq.app.persistence.model.GeoNote;
 import com.steveq.app.persistence.model.GeoNoteRequest;
+import com.steveq.app.persistence.model.UserRegistrationResponse;
 import com.steveq.app.persistence.service.GeoNoteService;
 import com.steveq.app.persistence.service.UserDetailsService;
 import com.steveq.app.persistence.service.UserService;
@@ -37,10 +38,10 @@ public class GeoNoteController {
     private Environment environment;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<String> insertGeonote(@Valid @RequestBody GeoNoteRequest geoNoteRequest){
+    public ResponseEntity<GeoNoteRequest> insertGeonote(@Valid @RequestBody GeoNoteRequest geoNoteRequest){
 
         if(geoNoteService.noteIsSpam(geoNoteRequest.getLat(), geoNoteRequest.getLng())){
-            return new ResponseEntity<>(environment.getProperty("geonote.spam"), HttpStatus.CONFLICT);
+            return new ResponseEntity<GeoNoteRequest>(new GeoNoteRequest(), HttpStatus.CONFLICT);
         }
         GeoNote geoNote =
                 new GeoNote(geoNoteRequest.getNote(), userService.getCurrentlyLoggedUser(), geoNoteRequest.getLat(), geoNoteRequest.getLng());
@@ -48,9 +49,12 @@ public class GeoNoteController {
         try{
             geoNoteService.save(geoNote);
         } catch (DataIntegrityViolationException dve){
-            return new ResponseEntity<>("Error during contact creation", HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<GeoNoteRequest>(new GeoNoteRequest(), HttpStatus.EXPECTATION_FAILED);
         }
-        return new ResponseEntity<>(environment.getProperty("geonote.create_ok"), HttpStatus.OK);
+        return new ResponseEntity<GeoNoteRequest>(
+                new GeoNoteRequest(geoNote.getNote(), geoNote.getLocation().getX(), geoNote.getLocation().getY()),
+                HttpStatus.OK
+        );
 
     }
 
