@@ -48,7 +48,7 @@ public class UserDetailsService implements org.springframework.security.core.use
         List<String> authoritiesNames = new ArrayList<>();
         authoritiesNames.add("STANDARD_USER");
         authoritiesNames.add("READ_OWNED");
-        authoritiesNames.add("READ_OTHERS");
+        authoritiesNames.add("READ_OTHER");
 
         Set<Authority> newUserAuthorities =
                 authoritiesRepository.findAuthoritiesByNameIn(authoritiesNames);
