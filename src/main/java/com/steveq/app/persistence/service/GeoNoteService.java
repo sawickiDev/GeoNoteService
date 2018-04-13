@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface GeoNoteService {
-    ResponseEntity save(GeoNote geoNote);
+    void save(GeoNote geoNote);
     List<GeoNoteRequest> getOwned();
     List<GeoNoteRequest> getOther();
     List<GeoNoteRequest> getOwnedInRadius(Double lat, Double lng, Double radius);

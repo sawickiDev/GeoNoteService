@@ -50,8 +50,11 @@ public class GeoNoteController {
         try{
             geoNoteService.save(geoNote);
         } catch (DataIntegrityViolationException dve){
-            return new ResponseEntity<GeoNoteRequest>(new GeoNoteRequest(), HttpStatus.EXPECTATION_FAILED);
+            GeoNoteRequest errorRequest = new GeoNoteRequest();
+            errorRequest.setError(environment.getProperty("geonote.location_occupied"));
+            return new ResponseEntity<GeoNoteRequest>(errorRequest, HttpStatus.NOT_ACCEPTABLE);
         }
+
         return new ResponseEntity<GeoNoteRequest>(
                 new GeoNoteRequest(geoNote.getNote(), geoNote.getLocation().getX(), geoNote.getLocation().getY(), geoNote.getOwner().getName()),
                 HttpStatus.OK

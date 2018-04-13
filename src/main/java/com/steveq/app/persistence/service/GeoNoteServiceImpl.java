@@ -43,17 +43,8 @@ public class GeoNoteServiceImpl implements GeoNoteService{
     private Environment environment;
 
     @Override
-    public ResponseEntity save(GeoNote geoNote) {
-        ResponseEntity re = null;
-        try{
-            geoNoteDao.save(geoNote);
-            re = new ResponseEntity(HttpStatus.CREATED);
-        } catch (DataIntegrityViolationException dive){
-            dive.printStackTrace();
-            re = new ResponseEntity(HttpStatus.CONFLICT);
-        }
-
-        return re;
+    public void save(GeoNote geoNote) throws DataIntegrityViolationException{
+        geoNoteDao.save(geoNote);
     }
 
     @Override

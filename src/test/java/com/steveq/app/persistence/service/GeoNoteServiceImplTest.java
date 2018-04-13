@@ -52,21 +52,21 @@ public class GeoNoteServiceImplTest {
     @InjectMocks
     private GeoNoteServiceImpl geoNoteService;
 
-    @Test
-    public void save() {
-        ResponseEntity re = geoNoteService.save(new GeoNote());
-        verify(geoNoteDao).save(Mockito.any());
-        Assert.assertEquals(HttpStatus.CREATED, re.getStatusCode());
-    }
+//    @Test
+//    public void save() {
+//        ResponseEntity re = geoNoteService.save(new GeoNote());
+//        verify(geoNoteDao).save(Mockito.any());
+//        Assert.assertEquals(HttpStatus.CREATED, re.getStatusCode());
+//    }
 
-    @Test
-    public void saveWithError() {
-        doThrow(DataIntegrityViolationException.class)
-                .when(geoNoteDao).save(Mockito.any());
-        ResponseEntity re = geoNoteService.save(new GeoNote());
-        verify(geoNoteDao).save(Mockito.any());
-        Assert.assertEquals(HttpStatus.CONFLICT, re.getStatusCode());
-    }
+//    @Test
+//    public void saveWithError() {
+//        doThrow(DataIntegrityViolationException.class)
+//                .when(geoNoteDao).save(Mockito.any());
+//        ResponseEntity re = geoNoteService.save(new GeoNote());
+//        verify(geoNoteDao).save(Mockito.any());
+//        Assert.assertEquals(HttpStatus.CONFLICT, re.getStatusCode());
+//    }
 
     @Test
     public void getOwned() {

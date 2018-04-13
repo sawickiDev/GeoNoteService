@@ -10,6 +10,6 @@ create table if not exists notes_table
   location geography,
   owner_id Integer,
   constraint note_pk primary key (id),
-  constraint note_user_fk foreign key (owner_id) references users_table(id)
-
+  constraint note_user_fk foreign key (owner_id) references users_table(id),
+  constraint location_uni unique (location)
 );
