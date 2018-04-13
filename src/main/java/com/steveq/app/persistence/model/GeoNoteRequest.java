@@ -17,6 +17,8 @@ public class GeoNoteRequest {
 
     private String owner;
 
+    private String error;
+
     public GeoNoteRequest(){}
 
     public GeoNoteRequest(String note, Double lat, Double lng) {
@@ -62,6 +64,14 @@ public class GeoNoteRequest {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 
     @Override
