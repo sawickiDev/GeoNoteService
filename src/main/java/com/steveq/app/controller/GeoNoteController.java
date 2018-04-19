@@ -39,9 +39,9 @@ public class GeoNoteController {
     private Environment environment;
 
     @GetMapping(value = "/expired")
-    public ResponseEntity<List<GeoNote>> expiredGeonotes() {
+    public ResponseEntity<List<GeoNoteRequest>> expiredGeonotes() {
         List<GeoNote> expired = geoNoteService.getExpiredNotes();
-        return new ResponseEntity<List<GeoNote>>(expired, HttpStatus.OK);
+        return new ResponseEntity<List<GeoNoteRequest>>(geoNoteService.mapGeonoteToRequestValues(expired), HttpStatus.OK);
     }
 
     @PostMapping(value = "/create")

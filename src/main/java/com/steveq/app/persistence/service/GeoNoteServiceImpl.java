@@ -143,7 +143,8 @@ public class GeoNoteServiceImpl implements GeoNoteService{
         geoNoteDao.saveAll(notes);
     }
 
-    private List<GeoNoteRequest> mapGeonoteToRequestValues(List<GeoNote> geoNotes){
+    @Override
+    public List<GeoNoteRequest> mapGeonoteToRequestValues(List<GeoNote> geoNotes){
 
         List<GeoNoteRequest> geoNoteRequests = new ArrayList<>();
         for(GeoNote geoNote : geoNotes){

@@ -15,4 +15,5 @@ public interface GeoNoteService {
     Boolean noteIsSpam(Double lat, Double lng);
     List<GeoNote> getExpiredNotes();
     void inactivateNotes(List<GeoNote> notes);
+    List<GeoNoteRequest> mapGeonoteToRequestValues(List<GeoNote> geoNotes);
 }
