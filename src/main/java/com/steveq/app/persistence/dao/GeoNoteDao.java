@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface GeoNoteDao extends CrudRepository<GeoNote, Long>{
-    List<GeoNote> getAllByOwner(User user);
-    List<GeoNote> getAllByOwnerIsNot(User user);
+    List<GeoNote> getAllByOwnerAndActiveIsTrue(User user);
+    List<GeoNote> findAllByOwnerNotAndActiveIsTrue(User user);
 }

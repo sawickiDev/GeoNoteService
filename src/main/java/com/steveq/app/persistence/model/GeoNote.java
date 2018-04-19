@@ -36,14 +36,22 @@ public class GeoNote {
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
+    @Column(name="expiration_time_minutes")
+    private Integer expirationTime;
+
+    @Column(name="active")
+    private Boolean active;
+
     public GeoNote(){
     }
 
-    public GeoNote(String note, User user, Double lat, Double lng) {
+    public GeoNote(String note, User user, Double lat, Double lng, Integer expirationTime) {
         this.note = note;
         this.createdDate = new Timestamp(new Date().getTime());
         this.location = getPointFromCoordinates(lat, lng);
         this.owner = user;
+        this.expirationTime = expirationTime;
+        this.active = true;
     }
 
     public Long getId() {
@@ -86,6 +94,22 @@ public class GeoNote {
         this.owner = owner;
     }
 
+    public Integer getExpirationTime() {
+        return expirationTime;
+    }
+
+    public void setExpirationTime(Integer expirationTime) {
+        this.expirationTime = expirationTime;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     private Point getPointFromCoordinates(Double lat, Double lng){
 
         WKTReader reader = new WKTReader();
@@ -125,6 +149,8 @@ public class GeoNote {
                 ", createdDate=" + createdDate +
                 ", location=" + location +
                 ", owner=" + owner +
+                ", expirationTime=" + expirationTime +
+                ", active=" + active +
                 '}';
     }
 }

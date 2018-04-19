@@ -1,0 +1,2 @@
+drop table configs_table;
+drop sequence configs_seq;

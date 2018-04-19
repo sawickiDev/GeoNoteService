@@ -9,6 +9,8 @@ create table if not exists notes_table
   created_date timestamp not null,
   location geography,
   owner_id Integer,
+  expiration_time_minutes integer not null default 60,
+  active boolean not null default true,
   constraint note_pk primary key (id),
   constraint note_user_fk foreign key (owner_id) references users_table(id),
   constraint location_uni unique (location)

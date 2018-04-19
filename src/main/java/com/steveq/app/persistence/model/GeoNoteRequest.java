@@ -15,22 +15,28 @@ public class GeoNoteRequest {
     @NotNull(message = "Please provide longitude")
     private Double lng;
 
+    @NotNull(message = "Please provide owner of this note")
     private String owner;
 
     private String error;
 
+    @NotNull(message = "Please provide expiration time for the note")
+    private Integer expirationMinutes;
+
     public GeoNoteRequest(){}
 
-    public GeoNoteRequest(String note, Double lat, Double lng) {
+    public GeoNoteRequest(String note, Double lat, Double lng, Integer expirationMinutes) {
         this.note = note;
         this.lat = lat;
         this.lng = lng;
+        this.expirationMinutes = expirationMinutes;
     }
 
-    public GeoNoteRequest(String note, Double lat, Double lng, String owner) {
+    public GeoNoteRequest(String note, Double lat, Double lng, Integer expirationMinutes, String owner) {
         this.note = note;
         this.lat = lat;
         this.lng = lng;
+        this.expirationMinutes = expirationMinutes;
         this.owner = owner;
     }
 
@@ -66,6 +72,14 @@ public class GeoNoteRequest {
         this.owner = owner;
     }
 
+    public Integer getExpirationMinutes() {
+        return expirationMinutes;
+    }
+
+    public void setExpirationMinutes(Integer expirationMinutes) {
+        this.expirationMinutes = expirationMinutes;
+    }
+
     public String getError() {
         return error;
     }
@@ -81,6 +95,8 @@ public class GeoNoteRequest {
                 ", lat=" + lat +
                 ", lng=" + lng +
                 ", owner='" + owner + '\'' +
+                ", error='" + error + '\'' +
+                ", expirationMinutes=" + expirationMinutes +
                 '}';
     }
 }

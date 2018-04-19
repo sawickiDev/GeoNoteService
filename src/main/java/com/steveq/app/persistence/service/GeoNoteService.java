@@ -13,4 +13,6 @@ public interface GeoNoteService {
     List<GeoNoteRequest> getOwnedInRadius(Double lat, Double lng, Double radius);
     List<GeoNoteRequest> getOtherInRadius(Double lat, Double lng, Double radius);
     Boolean noteIsSpam(Double lat, Double lng);
+    List<GeoNote> getExpiredNotes();
+    void inactivateNotes(List<GeoNote> notes);
 }

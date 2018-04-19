@@ -1,0 +1,12 @@
+create sequence configs_seq
+  increment by 1
+  start with 1;
+
+create table if not exists configs_table
+(
+  id integer not null,
+  user_id integer not null,
+  note_expiraion_hours integer not null default 1,
+  constraint "configs_pk" primary key (id),
+  constraint "user_config_fk" foreign key (user_id) references users_table(id)
+);
