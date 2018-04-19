@@ -126,7 +126,7 @@ public class GeoNoteServiceImpl implements GeoNoteService{
         Query expiredNotesQuery = session.createNativeQuery
                 (
                     "Select * from notes_table "
-                    + "where (cast(extract(epoch from created_date) as integer) + expiration_time_minutes) <= (cast(extract(epoch from current_timestamp) as integer));"
+                    + "where (cast(extract(epoch from created_date) as integer) + expiration_time_minutes*60) <= (cast(extract(epoch from current_timestamp) as integer));"
                 ).addEntity(GeoNote.class);
 
         List<GeoNote> results = (List<GeoNote>)expiredNotesQuery.getResultList();
