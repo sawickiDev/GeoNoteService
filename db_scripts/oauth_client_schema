@@ -8,7 +8,7 @@ create table if not exists scope_table
   name varchar(50) not null,
   constraint "scope_pk" primary key (id)
 );
-
+public
 insert into scope_table values
   (nextval('scope_seq'), 'create_note'),
   (nextval('scope_seq'), 'read_note');
