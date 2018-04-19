@@ -68,52 +68,52 @@ public class GeoNoteServiceImplTest {
 //        Assert.assertEquals(HttpStatus.CONFLICT, re.getStatusCode());
 //    }
 
-    @Test
-    public void getOwned() {
-        List<GeoNote> ownedNotes = new ArrayList<>();
-        ownedNotes.add(new GeoNote("note1", new User("standard", new Password("standard")), 1.123, 2.412));
-        ownedNotes.add(new GeoNote("note3", new User("standard2", new Password("standard2")), 1.123, 2.412));
-        when(geoNoteDao.getAllByOwner(any()))
-                .thenReturn(ownedNotes);
+//    @Test
+//    public void getOwned() {
+//        List<GeoNote> ownedNotes = new ArrayList<>();
+//        ownedNotes.add(new GeoNote("note1", new User("standard", new Password("standard")), 1.123, 2.412));
+//        ownedNotes.add(new GeoNote("note3", new User("standard2", new Password("standard2")), 1.123, 2.412));
+//        when(geoNoteDao.getAllByOwner(any()))
+//                .thenReturn(ownedNotes);
+//
+//        List<GeoNoteRequest> resultNotes = geoNoteService.getOwned();
+//        Assert.assertEquals(2, resultNotes.size());
+//        Assert.assertEquals("note1", resultNotes.get(0).getNote());
+//    }
 
-        List<GeoNoteRequest> resultNotes = geoNoteService.getOwned();
-        Assert.assertEquals(2, resultNotes.size());
-        Assert.assertEquals("note1", resultNotes.get(0).getNote());
-    }
-
-    @Test
-    public void getOwnedWithError() {
-        doThrow(DataAccessResourceFailureException.class)
-                .when(geoNoteDao)
-                .getAllByOwner(any());
-
-        List<GeoNoteRequest> resultNotes = geoNoteService.getOwned();
-        Assert.assertEquals(0, resultNotes.size());
-    }
-
-    @Test
-    public void getOther() {
-        List<GeoNote> otherNotes = new ArrayList<>();
-        otherNotes.add(new GeoNote("note1", new User("standard", new Password("standard")), 1.123, 2.412));
-        otherNotes.add(new GeoNote("note3", new User("standard2", new Password("standard2")), 1.123, 2.412));
-        when(geoNoteDao.getAllByOwnerIsNot(any()))
-                .thenReturn(otherNotes);
-
-        List<GeoNoteRequest> resultNotes = geoNoteService.getOther();
-        Assert.assertEquals(2, resultNotes.size());
-        Assert.assertEquals("note1", resultNotes.get(0).getNote());
-
-    }
-
-    @Test
-    public void getOtherWithError() {
-        doThrow(DataAccessResourceFailureException.class)
-                .when(geoNoteDao)
-                .getAllByOwnerIsNot(any());
-
-        List<GeoNoteRequest> resultNotes = geoNoteService.getOther();
-        Assert.assertEquals(0, resultNotes.size());
-    }
+//    @Test
+//    public void getOwnedWithError() {
+//        doThrow(DataAccessResourceFailureException.class)
+//                .when(geoNoteDao)
+//                .getAllByOwner(any());
+//
+//        List<GeoNoteRequest> resultNotes = geoNoteService.getOwned();
+//        Assert.assertEquals(0, resultNotes.size());
+//    }
+//
+//    @Test
+//    public void getOther() {
+//        List<GeoNote> otherNotes = new ArrayList<>();
+//        otherNotes.add(new GeoNote("note1", new User("standard", new Password("standard")), 1.123, 2.412));
+//        otherNotes.add(new GeoNote("note3", new User("standard2", new Password("standard2")), 1.123, 2.412));
+//        when(geoNoteDao.getAllByOwnerIsNot(any()))
+//                .thenReturn(otherNotes);
+//
+//        List<GeoNoteRequest> resultNotes = geoNoteService.getOther();
+//        Assert.assertEquals(2, resultNotes.size());
+//        Assert.assertEquals("note1", resultNotes.get(0).getNote());
+//
+//    }
+//
+//    @Test
+//    public void getOtherWithError() {
+//        doThrow(DataAccessResourceFailureException.class)
+//                .when(geoNoteDao)
+//                .getAllByOwnerIsNot(any());
+//
+//        List<GeoNoteRequest> resultNotes = geoNoteService.getOther();
+//        Assert.assertEquals(0, resultNotes.size());
+//    }
 
     @Test
     public void getOwnedInRadius() {

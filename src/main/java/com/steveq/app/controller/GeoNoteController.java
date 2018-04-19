@@ -38,6 +38,12 @@ public class GeoNoteController {
     @Autowired
     private Environment environment;
 
+    @GetMapping(value = "/expired")
+    public ResponseEntity<List<GeoNote>> expiredGeonotes() {
+        List<GeoNote> expired = geoNoteService.getExpiredNotes();
+        return new ResponseEntity<List<GeoNote>>(expired, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/create")
     public ResponseEntity<GeoNoteRequest> insertGeonote(@Valid @RequestBody GeoNoteRequest geoNoteRequest){
 
@@ -45,7 +51,7 @@ public class GeoNoteController {
             return new ResponseEntity<GeoNoteRequest>(new GeoNoteRequest(), HttpStatus.CONFLICT);
         }
         GeoNote geoNote =
-                new GeoNote(geoNoteRequest.getNote(), userService.getCurrentlyLoggedUser(), geoNoteRequest.getLat(), geoNoteRequest.getLng());
+                new GeoNote(geoNoteRequest.getNote(), userService.getCurrentlyLoggedUser(), geoNoteRequest.getLat(), geoNoteRequest.getLng(), geoNoteRequest.getExpirationMinutes());
 
         try{
             geoNoteService.save(geoNote);
@@ -56,7 +62,7 @@ public class GeoNoteController {
         }
 
         return new ResponseEntity<GeoNoteRequest>(
-                new GeoNoteRequest(geoNote.getNote(), geoNote.getLocation().getX(), geoNote.getLocation().getY(), geoNote.getOwner().getName()),
+                new GeoNoteRequest(geoNote.getNote(), geoNote.getLocation().getX(), geoNote.getLocation().getY(), geoNoteRequest.getExpirationMinutes(), geoNote.getOwner().getName()),
                 HttpStatus.OK
         );
 

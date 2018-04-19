@@ -8,6 +8,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.util.GeometricShapeFactory;
 import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -54,7 +55,7 @@ public class GeoNoteServiceImpl implements GeoNoteService{
         List<GeoNoteRequest> ownedNotes = new ArrayList<>();
         try{
             ownedNotes =
-                    mapGeonoteToRequestValues(geoNoteDao.getAllByOwner(userService.getCurrentlyLoggedUser()));
+                    mapGeonoteToRequestValues(geoNoteDao.getAllByOwnerAndActiveIsTrue(userService.getCurrentlyLoggedUser()));
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -68,7 +69,7 @@ public class GeoNoteServiceImpl implements GeoNoteService{
         List<GeoNoteRequest> otherNotes = new ArrayList<>();
         try{
             otherNotes =
-                    mapGeonoteToRequestValues(geoNoteDao.getAllByOwnerIsNot(userService.getCurrentlyLoggedUser()));
+                    mapGeonoteToRequestValues(geoNoteDao.findAllByOwnerNotAndActiveIsTrue(userService.getCurrentlyLoggedUser()));
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -117,11 +118,36 @@ public class GeoNoteServiceImpl implements GeoNoteService{
         return notesInSpamRadius.size() >= Integer.valueOf(environment.getProperty("geonote.spam_count"));
     }
 
+    @Transactional
+    @Override
+    public List<GeoNote> getExpiredNotes() {
+        Session session = entityManager.unwrap(Session.class);
+
+        Query expiredNotesQuery = session.createNativeQuery
+                (
+                    "Select * from notes_table "
+                    + "where (cast(extract(epoch from created_date) as integer) + expiration_time_minutes) <= (cast(extract(epoch from current_timestamp) as integer));"
+                ).addEntity(GeoNote.class);
+
+        List<GeoNote> results = (List<GeoNote>)expiredNotesQuery.getResultList();
+        System.out.println("EXPIRED NOTES :: " + results);
+
+        return results;
+    }
+
+    @Override
+    public void inactivateNotes(List<GeoNote> notes) {
+
+        notes.forEach(n -> n.setActive(false));
+
+        geoNoteDao.saveAll(notes);
+    }
+
     private List<GeoNoteRequest> mapGeonoteToRequestValues(List<GeoNote> geoNotes){
 
         List<GeoNoteRequest> geoNoteRequests = new ArrayList<>();
         for(GeoNote geoNote : geoNotes){
-            GeoNoteRequest geoNoteRequest = new GeoNoteRequest(geoNote.getNote(), geoNote.getLocation().getX(), geoNote.getLocation().getY(), geoNote.getOwner().getName());
+            GeoNoteRequest geoNoteRequest = new GeoNoteRequest(geoNote.getNote(), geoNote.getLocation().getX(), geoNote.getLocation().getY(), geoNote.getExpirationTime(), geoNote.getOwner().getName());
             geoNoteRequests.add(geoNoteRequest);
         }
 
