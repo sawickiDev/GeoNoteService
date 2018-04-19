@@ -22,6 +22,8 @@ public class GeoNoteRequest {
     @NotNull(message = "Please provide expiration time for the note")
     private Integer expirationMinutes;
 
+    private Long createdTimestamp;
+
     public GeoNoteRequest(){}
 
     public GeoNoteRequest(String note, Double lat, Double lng, Integer expirationMinutes) {
@@ -31,12 +33,13 @@ public class GeoNoteRequest {
         this.expirationMinutes = expirationMinutes;
     }
 
-    public GeoNoteRequest(String note, Double lat, Double lng, Integer expirationMinutes, String owner) {
+    public GeoNoteRequest(String note, Double lat, Double lng, Integer expirationMinutes, String owner, Long createdTimestamp) {
         this.note = note;
         this.lat = lat;
         this.lng = lng;
         this.expirationMinutes = expirationMinutes;
         this.owner = owner;
+        this.createdTimestamp = createdTimestamp;
     }
 
     public String getNote() {
@@ -85,6 +88,14 @@ public class GeoNoteRequest {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public Long getCreatedTimestamp() {
+        return createdTimestamp;
+    }
+
+    public void setCreatedTimestamp(Long createdTimestamp) {
+        this.createdTimestamp = createdTimestamp;
     }
 
     @Override

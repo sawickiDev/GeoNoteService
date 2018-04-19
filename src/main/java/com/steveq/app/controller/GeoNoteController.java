@@ -62,7 +62,7 @@ public class GeoNoteController {
         }
 
         return new ResponseEntity<GeoNoteRequest>(
-                new GeoNoteRequest(geoNote.getNote(), geoNote.getLocation().getX(), geoNote.getLocation().getY(), geoNoteRequest.getExpirationMinutes(), geoNote.getOwner().getName()),
+                new GeoNoteRequest(geoNote.getNote(), geoNote.getLocation().getX(), geoNote.getLocation().getY(), geoNoteRequest.getExpirationMinutes(), geoNote.getOwner().getName(), geoNote.getCreatedDate().getTime()),
                 HttpStatus.OK
         );
 
