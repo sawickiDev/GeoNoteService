@@ -84,7 +84,7 @@ public class GeoNoteServiceImpl implements GeoNoteService{
 
         Session session = entityManager.unwrap(Session.class);
 
-        Query query = session.createQuery("Select gn From GeoNote as gn Where dwithin(gn.location , :center, :radius) = true And gn.owner = :currentUser");
+        Query query = session.createQuery("Select gn From GeoNote as gn Where dwithin(gn.location , :center, :radius) = true And gn.owner = :currentUser And gn.active==true");
         query.setParameter("center", convertCoordsToGeometry(lat, lng));
         query.setParameter("radius", radius);
         query.setParameter("currentUser", userService.getCurrentlyLoggedUser());
@@ -101,7 +101,7 @@ public class GeoNoteServiceImpl implements GeoNoteService{
 
         Session session = entityManager.unwrap(Session.class);
 
-        Query query = session.createQuery("Select gn From GeoNote as gn Where dwithin(gn.location , :center, :radius) = true And gn.owner != :currentUser");
+        Query query = session.createQuery("Select gn From GeoNote as gn Where dwithin(gn.location , :center, :radius) = true And gn.owner != :currentUser and gn.active == true");
         query.setParameter("center", convertCoordsToGeometry(lat, lng));
         query.setParameter("radius", radius);
         query.setParameter("currentUser", userService.getCurrentlyLoggedUser());
