@@ -15,7 +15,6 @@ public class GeoNoteRequest {
     @NotNull(message = "Please provide longitude")
     private Double lng;
 
-    @NotNull(message = "Please provide owner of this note")
     private String owner;
 
     private String error;
