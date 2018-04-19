@@ -1,0 +1,14 @@
+drop table scope_table cascade;
+drop table grant_type_table cascade;
+drop table authorities_table cascade;
+drop table passwords_table cascade;
+drop table client_scope_table;
+drop table client_grant_type_table;
+drop table client_authorities_table;
+drop table oauth_clients_table;
+
+drop sequence scope_seq;
+drop sequence grant_type_seq;
+drop sequence authorities_seq;
+drop sequence passwords_seq;
+drop sequence oauth_clients_seq;

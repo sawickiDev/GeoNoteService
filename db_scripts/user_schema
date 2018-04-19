@@ -1,0 +1,22 @@
+create sequence users_seq
+  increment by 1
+  start with 1;
+
+create table if not exists users_table
+(
+  id integer not null,
+  name varchar(30) not null,
+  password integer not null,
+  constraint users_pk primary key (id),
+  constraint user_name_uni unique (name),
+  constraint user_password_fk foreign key (password) references passwords_table (id)
+);
+
+create table if not exists user_authorities_table
+(
+  user_id integer not null,
+  authorities_id integer not null,
+  constraint user_authorities_pk primary key (user_id, authorities_id),
+  constraint user_fk foreign key (user_id) references users_table(id),
+  constraint user_authorities_fk foreign key (authorities_id) references authorities_table(id)
+);

@@ -1,0 +1,5 @@
+
+drop table user_authorities_table cascade;
+drop table users_table cascade;
+
+drop sequence users_seq;
